@@ -26,10 +26,10 @@ public final class Constants {
   public static final double WHEEL_BASE = Units.inchesToMeters(27);
   public static final int kGyroPort = 0;
 
-  public static final int kRightRearID = 4;
-  public static final int kLeftRearID = 3;
-  public static final int kRightFrontID = 1;
-  public static final int kLeftFrontID = 2;
+  public static final int kRightRearID = 1;
+  public static final int kLeftRearID = 2;
+  public static final int kRightFrontID = 4;
+  public static final int kLeftFrontID = 3;
 
   public static final int kLeftElevID = 6;
   public static final int kRightElevID = 5;
