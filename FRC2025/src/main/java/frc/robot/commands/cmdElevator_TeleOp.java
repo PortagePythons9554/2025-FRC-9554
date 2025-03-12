@@ -2,12 +2,14 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.subElevator;
 
 public class cmdElevator_TeleOp extends Command {
   subElevator elevator;
   DoubleSupplier speed;
+  Encoder encoder;
   public cmdElevator_TeleOp(subElevator elevator, DoubleSupplier speed) {
     this.elevator = elevator;
     this.speed = speed;
@@ -15,11 +17,12 @@ public class cmdElevator_TeleOp extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   @Override
   public void execute() {
-    elevator.TeleOp(speed.getAsDouble());
+    elevator.TeleOp(speed.getAsDouble());    
   }
 
   @Override

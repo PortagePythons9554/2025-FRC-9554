@@ -21,12 +21,14 @@ public final class Constants {
 
 //gyro calibration constant
   public static final double VoltsPerDPS = 0.0128;
+//encoder CPR
+  public static final int CountsPerRevolution = 8192;
 
   public static final double TRACK_WIDTH = Units.inchesToMeters(27);
   public static final double WHEEL_BASE = Units.inchesToMeters(27);
   public static final int kGyroPort = 0;
 
-  public static final int kRightRearID = 1;
+  public static final int kRightRearID = 9;
   public static final int kLeftRearID = 2;
   public static final int kRightFrontID = 4;
   public static final int kLeftFrontID = 3;

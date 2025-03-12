@@ -6,10 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.subDrive;
 import frc.robot.commands.cmdDrive_TeleOp;
@@ -17,6 +15,7 @@ import frc.robot.subsystems.subElevator;
 import frc.robot.subsystems.subCoral;
 import frc.robot.commands.cmdCoral_TeleOp;
 import frc.robot.commands.cmdElevator_TeleOp;
+import frc.robot.commands.cmdCoralL2_TeleOp;
 
 public class RobotContainer {
   private final subDrive m_driveTrain = new subDrive();
@@ -25,6 +24,7 @@ public class RobotContainer {
   private final CommandXboxController m_operatorController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
   private final CommandXboxController m_buttonPusher = new CommandXboxController(1);
+
   
   public RobotContainer() {
     driverOneFunctions();
@@ -41,11 +41,12 @@ public class RobotContainer {
 
   private void driverTwoFunctions() {
     m_elevator.setDefaultCommand(new cmdElevator_TeleOp(m_elevator, ()->MathUtil.applyDeadband(m_buttonPusher.getLeftY()*-1, 0.05)));
-    m_buttonPusher.a().whileTrue(new cmdCoral_TeleOp(m_coral, ()->0.2));
-    m_buttonPusher.b().whileTrue(new cmdCoral_TeleOp(m_coral, ()->-0.2));
+    m_buttonPusher.a().whileTrue(new cmdCoral_TeleOp(m_coral, ()->0.3));
+    m_buttonPusher.b().whileTrue(new cmdCoral_TeleOp(m_coral, ()->-0.3));
+    m_buttonPusher.x().onTrue(new cmdCoralL2_TeleOp(m_elevator, () -> 0.3));
   }
 
   public Command getAutonomousCommand() {
-    return new InstantCommand();// Autos.exampleAuto(m_exampleSubsystem);
+    return Commands.run(() -> m_driveTrain.drive(-.125,0,0),m_driveTrain).withTimeout(2.).andThen(Commands.runOnce(()-> m_driveTrain.drive(0, 0, 0), m_driveTrain));
   }
 }

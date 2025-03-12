@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private final RobotContainer m_robotContainer;
+  //private subDrive m_driveTrain;
+  //private Timer timer;
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -24,6 +27,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    //timer = new Timer();
+    //this.m_driveTrain = new subDrive();
 
   }
 
@@ -53,8 +58,10 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    //timer.reset();
+    //timer.start();
+    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -63,7 +70,14 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+    //if(timer.get() < 5.0){
+    //m_driveTrain.drive(0.25,0,0);
+  }
+   // else{
+      //m_driveTrain.stop();}
+   // }
 
   @Override
   public void teleopInit() {

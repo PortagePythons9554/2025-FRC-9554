@@ -25,12 +25,12 @@ public class subDrive extends SubsystemBase {
   SparkMax m_leftRearMotor;
   SparkMax m_rightFrontMotor;
   SparkMax m_leftFrontMotor;
+  MecanumDrive driveTrain;
 
   private AHRS navx = new AHRS(NavXComType.kMXP_SPI); // Instantiate a NavX Gyroscope connected to a roboRIO USB port
-  private static MecanumDrive driveTrain;
 
   public subDrive() {
-    m_rightRearMotor = new SparkMax(Constants.kRightRearID, MotorType.kBrushless);
+    m_rightRearMotor = new SparkMax(9, MotorType.kBrushless);
     m_leftRearMotor = new SparkMax(Constants.kLeftRearID, MotorType.kBrushless);
     m_rightFrontMotor = new SparkMax(Constants.kRightFrontID, MotorType.kBrushless);
     m_leftFrontMotor = new SparkMax(Constants.kLeftFrontID, MotorType.kBrushless);
@@ -38,14 +38,15 @@ public class subDrive extends SubsystemBase {
     driveTrain = new MecanumDrive(m_leftFrontMotor, m_leftRearMotor, m_rightFrontMotor, m_rightRearMotor);
 
     SparkMaxConfig config = new SparkMaxConfig();
+    config
+      .idleMode(IdleMode.kCoast);
 
-    m_rightRearMotor.configure(config.inverted(false), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    m_leftRearMotor.configure(config.inverted(true), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    m_rightFrontMotor.configure(config.inverted(false), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    m_leftFrontMotor.configure(config.inverted(true), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_rightRearMotor.configure(config.inverted(true), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_leftRearMotor.configure(config.inverted(false), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_rightFrontMotor.configure(config.inverted(true), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_leftFrontMotor.configure(config.inverted(false), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    driveTrain = new MecanumDrive(m_leftFrontMotor::set, m_leftRearMotor::set, m_rightFrontMotor::set,
-        m_rightRearMotor::set);
+    driveTrain = new MecanumDrive(m_leftFrontMotor::set, m_leftRearMotor::set, m_rightFrontMotor::set,m_rightRearMotor::set);
   }
 
   public void zeroGyro() {
@@ -57,35 +58,18 @@ public class subDrive extends SubsystemBase {
   }
 
   public void drive(double forward, double strafe, double rotation) {
-    /*
-     * double robotYaw = getYaw();
-     * double radians = Math.toRadians(robotYaw);
-     * 
-     * double tempX = forward * Math.cos(radians) - strafe * Math.sin(radians);
-     * double tempY = forward * Math.sin(radians) + strafe * Math.cos(radians);
-     * 
-     * double maxInput = Math.max(Math.abs(tempX), Math.abs(tempY));
-     * if (maxInput > 1.0) {
-     * tempX /= maxInput;
-     * tempY /= maxInput;
-     * }
-     */
-    driveTrain.driveCartesian(forward, strafe, rotation, navx.getRotation2d());
-
+    driveTrain.driveCartesian(forward, strafe, rotation);
   }
 
   public void stop() {
-    m_leftFrontMotor.set(0);
-    m_leftRearMotor.set(0);
-    m_rightFrontMotor.set(0);
-    m_rightRearMotor.set(0);
-
+    m_leftFrontMotor.stopMotor();
+    m_leftRearMotor.stopMotor();
+    m_rightFrontMotor.stopMotor();
+    m_rightRearMotor.stopMotor();
   }
 
   @Override
   public void periodic() {
-    // Code in this method runs periodically, typically every 20 milliseconds
-    // Example: Print the yaw angle to the SmartDashboard
     SmartDashboard.putNumber("Gyro Yaw", getYaw());
 
   }
