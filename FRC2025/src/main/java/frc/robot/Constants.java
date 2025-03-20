@@ -18,6 +18,12 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class Elevator{
+    public static final Double Bottom = 0.0;
+    public static final Double L2 = 85.0;
+    public static final Double L3 = 140.0;
+    public static final Double Top = 150.0;
+  }
 
 //gyro calibration constant
   public static final double VoltsPerDPS = 0.0128;
@@ -35,6 +41,8 @@ public final class Constants {
 
   public static final int kLeftElevID = 6;
   public static final int kRightElevID = 5;
+
+  
   
 
 }

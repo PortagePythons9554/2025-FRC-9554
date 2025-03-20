@@ -13,9 +13,9 @@ import frc.robot.subsystems.subDrive;
 import frc.robot.commands.cmdDrive_TeleOp;
 import frc.robot.subsystems.subElevator;
 import frc.robot.subsystems.subCoral;
+import frc.robot.commands.cmdAuto_ElevatorToPosition;
 import frc.robot.commands.cmdCoral_TeleOp;
 import frc.robot.commands.cmdElevator_TeleOp;
-import frc.robot.commands.cmdCoralL2_TeleOp;
 
 public class RobotContainer {
   private final subDrive m_driveTrain = new subDrive();
@@ -24,6 +24,7 @@ public class RobotContainer {
   private final CommandXboxController m_operatorController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
   private final CommandXboxController m_buttonPusher = new CommandXboxController(1);
+  
 
   
   public RobotContainer() {
@@ -34,17 +35,22 @@ public class RobotContainer {
 
   private void driverOneFunctions() {
     m_driveTrain.setDefaultCommand(new cmdDrive_TeleOp(m_driveTrain,
-        () -> MathUtil.applyDeadband(m_operatorController.getLeftY(), 0.05),
-        () -> MathUtil.applyDeadband(m_operatorController.getLeftX() * -1, 0.05),
-        () -> MathUtil.applyDeadband(m_operatorController.getRightX() * -1, 0.05)));
+        () -> MathUtil.applyDeadband(m_operatorController.getLeftY(), 0.01),
+        () -> MathUtil.applyDeadband(m_operatorController.getLeftX() * -1, 0.01),
+        () -> MathUtil.applyDeadband(m_operatorController.getRightX() * -1, 0.01)));
   }
 
   private void driverTwoFunctions() {
-    m_elevator.setDefaultCommand(new cmdElevator_TeleOp(m_elevator, ()->MathUtil.applyDeadband(m_buttonPusher.getLeftY()*-1, 0.05)));
+    m_elevator.setDefaultCommand(new cmdElevator_TeleOp(m_elevator, ()->MathUtil.applyDeadband(m_buttonPusher.getLeftY()*-1, 0.03)));
+    m_buttonPusher.x().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, ()->Constants.Elevator.L2));
+    m_buttonPusher.y().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, ()->Constants.Elevator.L3));
+    m_buttonPusher.start().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, ()->Constants.Elevator.Bottom));
     m_buttonPusher.a().whileTrue(new cmdCoral_TeleOp(m_coral, ()->0.3));
     m_buttonPusher.b().whileTrue(new cmdCoral_TeleOp(m_coral, ()->-0.3));
-    m_buttonPusher.x().onTrue(new cmdCoralL2_TeleOp(m_elevator, () -> 0.3));
-  }
+
+      }
+    
+    
 
   public Command getAutonomousCommand() {
     return Commands.run(() -> m_driveTrain.drive(-.125,0,0),m_driveTrain).withTimeout(2.).andThen(Commands.runOnce(()-> m_driveTrain.drive(0, 0, 0), m_driveTrain));
