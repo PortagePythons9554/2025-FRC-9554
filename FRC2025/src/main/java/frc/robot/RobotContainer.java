@@ -42,9 +42,9 @@ public class RobotContainer {
 
   private void driverTwoFunctions() {
     m_elevator.setDefaultCommand(new cmdElevator_TeleOp(m_elevator, ()->MathUtil.applyDeadband(m_buttonPusher.getLeftY()*-1, 0.03)));
-    m_buttonPusher.x().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, ()->Constants.Elevator.L2));
-    m_buttonPusher.y().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, ()->Constants.Elevator.L3));
-    m_buttonPusher.start().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, ()->Constants.Elevator.Bottom));
+    m_buttonPusher.x().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, Constants.Elevator.L2));
+    m_buttonPusher.y().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, Constants.Elevator.L3));
+    m_buttonPusher.start().whileTrue(new cmdAuto_ElevatorToPosition(m_elevator, Constants.Elevator.Bottom));
     m_buttonPusher.a().whileTrue(new cmdCoral_TeleOp(m_coral, ()->0.3));
     m_buttonPusher.b().whileTrue(new cmdCoral_TeleOp(m_coral, ()->-0.3));
 

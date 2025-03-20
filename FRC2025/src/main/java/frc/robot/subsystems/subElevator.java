@@ -62,7 +62,7 @@ public class subElevator extends SubsystemBase {
     public void moveToPosition(){
         leftElevatorMotor.set(MathUtil.clamp(elevPID.calculate(elevatorEncoder.getPosition()), -0.6, 1));
         rightElevatorMotor.set(MathUtil.clamp(elevPID.calculate(elevatorEncoder.getPosition()), -0.6, 1));
-        System.out.println("Target: " + elevPID.getSetpoint() + " Drive: " + elevPID.calculate(elevatorEncoder.getPosition()));
+        //System.out.println("Target: " + elevPID.getSetpoint() + " Drive: " + elevPID.calculate(elevatorEncoder.getPosition()));
     }
 
     public void stop() {
